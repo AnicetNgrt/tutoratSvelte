@@ -1,21 +1,22 @@
-const getAll = () => {
-  return JSON.parse(localStorage.getItem('todos'));
+const getAll = async () => {
+  return JSON.parse(localStorage.getItem('todos') || '[]');
 };
 
-const create = (todo) => {
-  return persist([...getAll(), todo]);
+const create = async (todo) => {
+  persist([...(await getAll()), todo]);
+  return todo;
 };
 
-const update = (id, todo) => {
-  const todos = getAll()
-    .filter(t => t.id !== id)
-    .push(todo);
-  return request.then((response) => response.data);
+const update = async (id, todo) => {
+  const todos = (await getAll())
+    .filter(t => t.id !== id);
+  persist([...todos, todo]);
+  return todo;
 };
 
-const remove = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`);
-  return request.then((response) => response.data);
+const remove = async (id) => {
+  persist((await getAll()).filter(t => t.id !== id));
+  return {};
 };
 
 const persist = (todos) => {
