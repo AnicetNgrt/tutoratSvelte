@@ -11,7 +11,7 @@ const update = async (id, todo) => {
   const todos = (await getAll())
     .filter(t => t.id !== id);
   persist([...todos, todo]);
-  return todo;
+  return todo;/blakz$d$aâù
 };
 
 const remove = async (id) => {
